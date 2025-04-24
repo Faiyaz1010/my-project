@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AQ-Slipper | Product Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #013645;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .nav-links,
+        .nav-icons {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-links a,
+        .nav-icons i {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover,
+        .nav-icons i:hover {
+            color: #f0c040;
+        }
+
+        /* Product Section */
+        .product-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            background: white;
+            display: flex;
+            gap: 40px;
+            padding: 30px;
+            border-radius: 10px;
+            flex-wrap: wrap;
+        }
+
+        .product-images {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #main-image {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .thumbnail-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .thumbnail-row img {
+            width: 60px;
+            height: 60px;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: 0.2s ease;
+        }
+
+        .thumbnail-row img.active,
+        .thumbnail-row img:hover {
+            border-color: #013645;
+        }
+
+        .product-details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .product-details h2 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: #013645;
+        }
+
+        .product-details .price {
+            font-size: 22px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .buttons button {
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            border-radius: 6px;
+        }
+
+        .add-cart {
+            background: #013645;
+            color: white;
+        }
+
+        .buy-now {
+            background: #f0c040;
+            color: black;
+        }
+
+        .section-title {
+            margin-top: 25px;
+            font-weight: bold;
+            color: #013645;
+        }
+
+        .feature-list,
+        .dimension-list,
+        .notes-list {
+            list-style: disc;
+            padding-left: 20px;
+            margin: 10px 0 20px;
+        }
+
+        .share-icons {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .share-icons i {
+            font-size: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .share-icons i:hover {
+            transform: scale(1.2);
+        }
+
+        /* Zoom Modal */
+        .zoom-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .zoom-wrapper {
+            max-width: 90%;
+            max-height: 90vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .zoom-gallery {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .zoom-slider {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: 20px;
+        }
+
+        .zoom-thumb {
+            width: 350px;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 10px;
+            flex-shrink: 0;
+            cursor: pointer;
+            border: 2px solid white;
+            transition: transform 0.3s;
+        }
+
+        .zoom-thumb:hover {
+            transform: scale(1.05);
+        }
+
+        .arrow {
+            font-size: 36px;
+            color: white;
+            cursor: pointer;
+            padding: 10px;
+            user-select: none;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            background: red;
+            color: white;
+            border: none;
+            font-size: 20px;
+            padding: 8px 12px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .product-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .zoom-gallery {
+                flex-direction: column;
+            }
+
+            .zoom-thumb {
+                width: 250px;
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<header class="navbar">
+    <div class="logo">AQ-Slipper</div>
+    <nav class="nav-links">
+        <a href="#">Men</a>
+        <a href="#">Women</a>
+        <a href="#">Jackets</a>
+        <a href="#">Slippers</a>
+    </nav>
+    <div class="nav-icons">
+        <i class="fas fa-search"></i>
+        <i class="fas fa-user"></i>
+        <i class="fas fa-shopping-cart"></i>
+    </div>
+</header>
+
+<!-- Product Section -->
+<div class="product-container">
+    <div class="product-images">
+        <img src="photo1.jpg" id="main-image" alt="Main Product" />
+        <div class="thumbnail-row">
+            <img src="photo1.jpg" class="thumbnail active" />
+            <img src="photo2.jpg" class="thumbnail" />
+            <img src="photo3.jpg" class="thumbnail" />
+            <img src="photo4.jpg" class="thumbnail" />
+            <img src="photo5.jpg" class="thumbnail" />
+        </div>
+    </div>
+    <div class="product-details">
+        <h2>Men's Leather Purse</h2>
+        <p>Material: Genuine Leather</p>
+        <p class="price">$25.00</p>
+
+        <div class="buttons">
+            <button class="add-cart">Add to Cart</button>
+            <button class="buy-now">Buy It Now</button>
+        </div>
+
+        <div class="section-title">⭐ Key Features</div>
+        <ul class="feature-list">
+            <li>100% Premium Leather</li>
+            <li>Compact & Travel Friendly</li>
+            <li>Multiple Card Slots</li>
+            <li>Water Resistant Design</li>
+        </ul>
+
+        <div class="section-title">📏 Dimensions</div>
+        <ul class="dimension-list">
+            <li>Length: 12 cm</li>
+            <li>Width: 10 cm</li>
+            <li>Depth: 2 cm</li>
+            <li>Weight: 180g approx.</li>
+        </ul>
+
+        <div class="section-title">📝 Notes</div>
+        <ul class="notes-list">
+            <li>Color may slightly vary due to photography.</li>
+            <li>Genuine leather has natural texture variations.</li>
+        </ul>
+
+        <div class="share-icons">
+            <i class="fab fa-facebook" style="color:#4267B2;"></i>
+            <i class="fab fa-instagram" style="color:#E1306C;"></i>
+            <i class="fab fa-whatsapp" style="color:#25D366;"></i>
+        </div>
+    </div>
+</div>
+
+<!-- Zoom Modal -->
+<div class="zoom-modal" id="zoom-modal">
+    <div class="zoom-wrapper">
+        <button class="close-btn" id="close-btn">×</button>
+        <div class="zoom-gallery">
+            <div class="arrow" id="prev">&#10094;</div>
+            <div class="zoom-slider" id="zoom-slider">
+                <img src="photo1.jpg" class="zoom-thumb" />
+                <img src="photo2.jpg" class="zoom-thumb" />
+                <img src="photo3.jpg" class="zoom-thumb" />
+                <img src="photo4.jpg" class="zoom-thumb" />
+                <img src="photo5.jpg" class="zoom-thumb" />
+            </div>
+            <div class="arrow" id="next">&#10095;</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // JavaScript for Thumbnail Click & Zoom Modal
+    const thumbnails = document.querySelectorAll(".thumbnail");
+    const mainImage = document.getElementById("main-image");
+    const zoomModal = document.getElementById("zoom-modal");
+    const closeBtn = document.getElementById("close-btn");
+    const zoomSlider = document.getElementById("zoom-slider");
+    const next = document.getElementById("next");
+    const prev = document.getElementById("prev");
+
+    let currentIndex = 0;
+    const images = Array.from(thumbnails).map(img => img.src);
+
+    thumbnails.forEach((thumb, index) => {
+        thumb.addEventListener("click", () => {
+            thumbnails.forEach(t => t.classList.remove("active"));
+            thumb.classList.add("active");
+            mainImage.src = thumb.src;
+        });
+    });
+
+    mainImage.addEventListener("click", () => {
+        zoomModal.style.display = "flex";
+    });
+
+    closeBtn.addEventListener("click", () => {
+        zoomModal.style.display = "none";
+    });
+
+    next.addEventListener("click", () => {
+        currentIndex = (currentIndex + 1) % images.length;
+        zoomSlider.scrollBy({ left: 400, behavior: 'smooth' });
+    });
+
+    prev.addEventListener("click", () => {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        zoomSlider.scrollBy({ left: -400, behavior: 'smooth' });
+    });
+</script>
+
+</body>
+
+</html>
